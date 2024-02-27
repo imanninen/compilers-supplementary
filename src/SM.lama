@@ -67,11 +67,14 @@ fun compileExpr (expr) {
 -- Takes a statement, returns a list of stack machine
 -- instructions.
 public fun compileSM (stmt) {
+  fun compileStmt (stmt) {
   case stmt of
     Assn (x, exp) -> compileExpr(exp) <+ ST (x)
-    | Seq (st1, st2) -> compileSM(st1) <+> compileSM(st2)
+    | Seq (st1, st2) -> compileStmt(st1) <+> compileStmt(st2)
     | Skip -> emptyBuffer() 
     | Read (x) -> singletonBuffer(READ) <+ ST (x)
     | Write (exp) -> compileExpr(exp) <+ WRITE
   esac 
+}
+getBuffer(compileStmt(stmt))
 }
