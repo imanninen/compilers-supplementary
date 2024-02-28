@@ -322,7 +322,7 @@ fun compile (env, code) {
                                     <+ Binop (op, eax, edx) <+ Mov (edx, y)
                   ]
             elif isDiv(op)
-            then ( sprintf("hello\n");
+            then (
               [env.push(y), code <+ Mov (y, eax) <+ Cltd <+ IDiv (x)
                 <+ Mov (if compare(op, "/") == 0 then eax else edx fi, y)]
               )
